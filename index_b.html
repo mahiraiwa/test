@@ -1,86 +1,120 @@
-<h1>こんにちは</h1>
 <!DOCTYPE html>
 <html lang="ja">
 <head>
 <meta charset="UTF-8">
-<title>問診票</title>
-<link rel="stylesheet" href="style.css">
+<title>主訴選択</title>
 </head>
 
 <body>
 
-<h1>問診票</h1>
+<h1>主訴確認</h1>
 
-<p>言語を選択してください</p>
+<p>今回もっとも困っている症状は何ですか</p>
 
 <form>
 
-<input type="radio" name="lang" checked>
-日本語
+<label>
+<input type="radio" name="chief" value="痛み" checked>
+痛み（頭痛、胸痛、腹痛、腰痛、関節痛、その他のからだの場所の痛み）
+</label>
+
 <br><br>
 
-<input type="radio" name="lang">
-English（英語）
+<label>
+<input type="radio" name="chief" value="発熱">
+発熱
+</label>
+
 <br><br>
 
-<input type="radio" name="lang">
-中文简体（中国語・簡体字）
+<label>
+<input type="radio" name="chief" value="浮腫">
+浮腫（顔、四肢などのむくみ）
+</label>
+
 <br><br>
 
-<input type="radio" name="lang">
-繁體中文（中国語・繁体字）
+<label>
+<input type="radio" name="chief" value="皮膚の異常">
+皮膚の異常
+</label>
+
 <br><br>
 
-<input type="radio" name="lang">
-বাংলা（ベンガル語）
+<label>
+<input type="radio" name="chief" value="めまい">
+めまい（視野が動いて目が回る、足がふらふらする、体がフアフアする、気を失いそうになる）
+</label>
+
 <br><br>
 
-<input type="radio" name="lang">
-اردو（ウルドゥー語）
+<label>
+<input type="radio" name="chief" value="気を失った、気が遠くなった">
+気を失った、気が遠くなった
+</label>
+
 <br><br>
 
-<input type="radio" name="lang">
-فارسی（ペルシャ語）
+<label>
+<input type="radio" name="chief" value="息が苦しい">
+息が苦しい
+</label>
+
 <br><br>
 
-<input type="radio" name="lang">
-Bahasa Indonesia（インドネシア語）
+<label>
+<input type="radio" name="chief" value="咳や痰が出る">
+咳や痰が出る
+</label>
+
 <br><br>
 
-<input type="radio" name="lang">
-Tiếng Việt（ベトナム語）
+<label>
+<input type="radio" name="chief" value="吐き気や嘔吐がある">
+吐き気や嘔吐がある
+</label>
+
 <br><br>
 
-<input type="radio" name="lang">
-မြန်မာဘာသာ（ミャンマー語）
+<label>
+<input type="radio" name="chief" value="手足がしびれる">
+手足がしびれる
+</label>
+
 <br><br>
 
-<input type="radio" name="lang">
-नेपाली（ネパール語）
+<label>
+<input type="radio" name="chief" value="その他">
+その他
+</label>
+
 <br><br>
 
-<input type="radio" name="lang">
-Tagalog（タガログ語）
-<br><br>
-
-<input type="radio" name="lang">
-தமிழ்（タミル語）
-<br><br>
-
-<input type="radio" name="lang">
-සිංහල（シンハラ語）
-<br><br>
-
-<!--
-<button type="button">次へ</button>
--->
-
-<button type="button" onclick="location.href='step2_b.html'">
+<button type="button" onclick="主訴保存()">
 次へ
 </button>
 
 </form>
 
+<script>
+
+function 主訴保存(){
+
+const 主訴 =
+document.querySelector(
+'input[name="chief"]:checked'
+).value;
+
+localStorage.setItem(
+"主訴",
+主訴
+);
+
+location.href = "step3.html";
+
+}
+
+</script>
+
 </body>
 </html>
-
