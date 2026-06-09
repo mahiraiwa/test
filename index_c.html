@@ -75,11 +75,23 @@ Tagalog（タガログ語）
 <button type="button">次へ</button>
 -->
 
-<button type="button" onclick="location.href='step2_c.html'">
+<button type="button" onclick="開始()">
 次へ
 </button>
 
 </form>
+
+<script>
+
+function 開始(){
+
+localStorage.clear();
+
+location.href = "step2_c.html";
+
+}
+
+</script>
 
 </body>
 </html>
