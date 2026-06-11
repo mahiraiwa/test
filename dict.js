@@ -2,6 +2,9 @@
 // 形式: 行番号: {ja: "日本語", en: "英語"}
 
 const 辞書 = {
+  91:    {ja: "おはようございます", en: "Good morning"},
+  92:    {ja: "問診票", en: "Medical Questionnaire"},
+  93:    {ja: "言語を選択してください", en: "Please select your language"},
   100:   {ja: "次へ", en: "Next"},
 
   20100: {ja: "主訴確認", en: "Check your main reason for visit"},
