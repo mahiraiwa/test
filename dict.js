@@ -48,7 +48,7 @@ const 辞書 = {
   40400: {ja: "次へ", en: "Next"},
 
   50100: {ja: "痛みの経過", en: "When the pain started"},
-  50200: {ja: "首が、初めて痛いと感じたのは、いつ頃からですか", en: "When did you first notice pain in your neck?"},
+  50200: {ja: "初めて痛いと感じたのは、いつ頃からですか", en: "When did you first notice the pain?"},
   50300: {ja: "数時間前から", en: "A few hours ago"},
   50400: {ja: "24時間以内", en: "Within the last 24 hours"},
   50500: {ja: "1日～数日前から", en: "One to several days ago"},
