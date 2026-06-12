@@ -154,7 +154,7 @@ const 辞書 = {
   130400: {ja: "やり直し", en: "Start over"},
 
   140100: {ja: "症状の経過", en: "When the fever started"},
-  140200: {ja: "発熱は、いつ頃からありますか", en: "When did the fever start?"},
+  140200: {ja: "この症状はいつ頃からありますか", en: "When did this symptom start?"},
   140300: {ja: "数時間前から", en: "A few hours ago"},
   140400: {ja: "24時間以内", en: "Within the last 24 hours"},
   140500: {ja: "1日～数日前から", en: "One to several days ago"},
