@@ -132,6 +132,8 @@ function 次へ(){
 
   localStorage.setItem("痛み部位", JSON.stringify(選択部位));
 
+ 　localStorage.removeItem("最重要痛み部位");
+  
   if(選択部位.length === 1){
     location.href = "step504.html";
   } else {
