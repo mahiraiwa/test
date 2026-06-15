@@ -49,6 +49,10 @@ body::before {
 <h1 id="見出し母国語"></h1>
 <div id="まとめ母国語"></div>
 
+<p>　</p>
+<button type="button" id="行130400" onclick="やり直し()"></button>
+<p>　</p>
+
 <hr>
 
 <h1 id="見出し日本語"></h1>
@@ -63,8 +67,6 @@ body::before {
 <br>
 
 <button type="button" onclick="window.print()">印刷</button>
-&nbsp;&nbsp;
-<button type="button" onclick="やり直し()">やり直し</button>
 
 <script src="dict.js"></script>
 <script>
@@ -181,6 +183,8 @@ function まとめ表示() {
     テキスト取得(130200, 言語);
   document.getElementById("見出し日本語").textContent =
     テキスト取得(130200, "ja");
+  document.getElementById("行130400").textContent =
+    テキスト取得(130400, 言語);
 
   エリアに追加(document.getElementById("まとめ母国語"), 結果, 言語);
   エリアに追加(document.getElementById("まとめ日本語"), 結果, "ja");
