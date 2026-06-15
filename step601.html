@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<title>問診まとめ</title>
+<link rel="stylesheet" href="style.css">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+</head>
+<body>
+<style>
+body {
+  position: relative;
+}
+body::before {
+  content: "";
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 300px;
+  height: 300px;
+  background-image: url("logob.jpg");
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-position: center;
+  opacity: 0.15;
+  pointer-events: none;
+  z-index: 0;
+}
+.まとめ見出し {
+  margin-top: 1.5em;
+  font-weight: bold;
+  border-bottom: 1px solid #888;
+  padding-bottom: 0.2em;
+}
+.まとめ行 {
+  margin: 0.3em 0 0.3em 1em;
+}
+#QRエリア {
+  margin: 1.5em 0;
+  text-align: center;
+}
+@media print {
+  button { display: none; }
+  body::before { display: none; }
+}
+</style>
+
+<h1 id="見出し母国語"></h1>
+<div id="まとめ母国語"></div>
+
+<hr>
+
+<h1 id="見出し日本語"></h1>
+<div id="まとめ日本語"></div>
+
+<hr>
+
+<div id="QRエリア">
+  <div id="QRコード"></div>
+</div>
+
+<br>
+
+<button type="button" onclick="window.print()">印刷</button>
+&nbsp;&nbsp;
+<button type="button" onclick="やり直し()">やり直し</button>
+
+<script src="dict.js"></script>
+<script>
+
+function 問診結果取得() {
+  const 結果 = [];
+  for (let i = 0; i < localStorage.length; i++) {
+    const キー = localStorage.key(i);
+    const 値 = localStorage.getItem(キー);
+    const 行番号 = parseInt(値);
+    if (!isNaN(行番号) && String(行番号) === 値) {
+      結果.push({ キー: キー, 値: 行番号 });
+    }
+  }
+  結果.sort(function(a, b) { return a.値 - b.値; });
+  return 結果;
+}
+
+function まとめ表示() {
+  const 言語 = localStorage.getItem("選択言語") || "ja";
+  const 結果 = 問診結果取得();
+
+  // 母国語見出し
+  document.getElementById("見出し母国語").textContent =
+    文字列取得(130200);
+
+  // 日本語見出し
+  document.getElementById("見出し日本語").textContent =
+    辞書[130200]["ja"];
+
+  // 母国語まとめ
+  const 母国語エリア = document.getElementById("まとめ母国語");
+  結果.forEach(function(項目) {
+    const 行 = document.createElement("p");
+    行.className = "まとめ行";
+    行.textContent = 辞書[項目.値]
+      ? (辞書[項目.値][言語] || 辞書[項目.値]["ja"])
+      : 項目.値;
+    母国語エリア.appendChild(行);
+  });
+
+  // 日本語まとめ
+  const 日本語エリア = document.getElementById("まとめ日本語");
+  結果.forEach(function(項目) {
+    const 行 = document.createElement("p");
+    行.className = "まとめ行";
+    行.textContent = 辞書[項目.値]
+      ? 辞書[項目.値]["ja"]
+      : 項目.値;
+    日本語エリア.appendChild(行);
+  });
+
+  // QRコード生成（行番号をカンマ区切りで）
+  const QRデータ = 結果.map(function(項目) {
+    return 項目.値;
+  }).join(",");
+
+  new QRCode(document.getElementById("QRコード"), {
+    text: QRデータ,
+    width: 256,
+    height: 256,
+  });
+}
+
+function やり直し() {
+  localStorage.clear();
+  location.href = "index500b.html";
+}
+
+まとめ表示();
+
+</script>
+</body>
+</html>
