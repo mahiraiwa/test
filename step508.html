@@ -6,7 +6,7 @@
 </head>
 <body>
 
-<h1>既往の痛みの有無</h1>
+<!-- <p id="発症時期表示"></p> -->
 
 <p id="発症時期表示"></p>
 
@@ -54,17 +54,15 @@
 
 <script>
 
-const 痛み開始時期 =
-  localStorage.getItem("痛み開始時期");
+// const 痛み開始時期 =
+//   localStorage.getItem("痛み開始時期");
 
-if (痛み開始時期) {
-
-  document.getElementById("発症時期表示").textContent =
-    "あなたは「" +
-    痛み開始時期 +
-    "」から痛みがあると回答しました。";
-
-}
+// if (痛み開始時期) {
+//   document.getElementById("発症時期表示").textContent =
+//     "あなたは「" +
+//     痛み開始時期 +
+//     "」から痛みがあると回答しました。";
+// }
 
 function 次へ() {
 
