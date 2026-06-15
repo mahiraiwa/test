@@ -71,77 +71,69 @@ body::before {
 
 // キー名→質問行番号マッピング
 const キー質問番号 = {
-  "主訴一覧":             20200,
-  "最重要主訴":           22300,
-  "痛み部位":             30200,
-  "最重要痛み部位":       40100,
-  "痛み開始時期":         50200,
-  "最初の痛みの持続時間": 60300,
-  "痛みの変化":           70300,
-  "悪化する姿勢や動作":   80200,
-  "楽になる姿勢や動作":   80600,
-  "過去に似た痛み":       90300,
-  "発症時期":             140200,
-  "食欲":                 100300,
-  "食事量":               100600,
-  "便通の変化":           110200,
-  "睡眠の変化":           110500,
-  "排尿しにくい":         120200,
-  "排尿時痛":             120500,
+  "主訴一覧":               20200,
+  "最重要主訴":             22300,
+  "痛み部位":               30200,
+  "最重要痛み部位":         40100,
+  "痛み開始時期":           50200,
+  "最初の痛みの持続時間":   60300,
+  "痛みの変化":             70300,
+  "悪化する姿勢や動作":     80200,
+  "楽になる姿勢や動作":     80600,
+  "過去に似た痛み":         90300,
+  "発症時期":               140200,
+  "最初のめまいの持続時間": 160300,
+  "食欲":                   100300,
+  "食事量":                 100600,
+  "便通の変化":             110200,
+  "睡眠の変化":             110500,
+  "排尿しにくい":           120200,
+  "排尿時痛":               120500,
   "場所がわからなくなった": 120800,
-  "失神":                 121100,
-  "健康診断受診":         121400,
-  "大きな病気の既往":     121800,
-   "最初のめまいの持続時間": 160300,
+  "失神":                   121100,
+  "健康診断受診":           121400,
+  "大きな病気の既往":       121800,
 };
-
-// 表示順（キー名の順序を行番号で制御）
-const 表示順 = [
-  "主訴一覧",
-  "最重要主訴",
-  "痛み部位",
-  "最重要痛み部位",
-  "痛み開始時期",
-  "最初の痛みの持続時間",
-  "痛みの変化",
-  "悪化する姿勢や動作",
-  "楽になる姿勢や動作",
-  "過去に似た痛み",
-  "発症時期",
-  "食欲",
-  "食事量",
-  "便通の変化",
-  "睡眠の変化",
-  "排尿しにくい",
-  "排尿時痛",
-  "場所がわからなくなった",
-  "失神",
-  "健康診断受診",
-  "大きな病気の既往",
-    "最初のめまいの持続時間",
-];
 
 function テキスト取得(行番号, lang) {
   if (!辞書[行番号]) return String(行番号);
   return 辞書[行番号][lang] || 辞書[行番号]["ja"];
 }
 
-function エリアに追加(エリア, lang) {
-  表示順.forEach(function(キー) {
-    const 値 = localStorage.getItem(キー);
-    if (!値) return;
+// 値から代表行番号を取得（ソート用）
+function 代表行番号取得(値) {
+  let 解析済み = null;
+  try { 解析済み = JSON.parse(値); } catch(e) {}
+  if (Array.isArray(解析済み)) {
+    return Math.min.apply(null, 解析済み.map(Number));
+  }
+  const n = parseInt(値);
+  return isNaN(n) ? 999999 : n;
+}
 
-    const 質問番号 = キー質問番号[キー];
+function 問診結果取得() {
+  const 結果 = [];
+  for (let i = 0; i < localStorage.length; i++) {
+    const キー = localStorage.key(i);
+    if (キー === "選択言語") continue;
+    if (!(キー in キー質問番号)) continue;
+    const 値 = localStorage.getItem(キー);
+    結果.push({ キー: キー, 値: 値, ソート番号: 代表行番号取得(値) });
+  }
+  結果.sort(function(a, b) { return a.ソート番号 - b.ソート番号; });
+  return 結果;
+}
+
+function エリアに追加(エリア, 結果, lang) {
+  結果.forEach(function(項目) {
+    const 質問番号 = キー質問番号[項目.キー];
     const 質問行 = document.createElement("p");
     質問行.className = "質問行";
-    質問行.textContent = 質問番号
-      ? テキスト取得(質問番号, lang)
-      : キー;
+    質問行.textContent = テキスト取得(質問番号, lang);
     エリア.appendChild(質問行);
 
-    // JSON配列（主訴一覧・痛み部位）の処理
     let 解析済み = null;
-    try { 解析済み = JSON.parse(値); } catch(e) {}
+    try { 解析済み = JSON.parse(項目.値); } catch(e) {}
 
     if (Array.isArray(解析済み)) {
       解析済み.forEach(function(行番号) {
@@ -151,50 +143,44 @@ function エリアに追加(エリア, lang) {
         エリア.appendChild(回答行);
       });
     } else {
-      const 行番号 = parseInt(値);
       const 回答行 = document.createElement("p");
       回答行.className = "回答行";
-      回答行.textContent = (!isNaN(行番号) && String(行番号) === 値)
-        ? テキスト取得(行番号, lang)
-        : 値;
+      const n = parseInt(項目.値);
+      回答行.textContent = (!isNaN(n) && String(n) === 項目.値)
+        ? テキスト取得(n, lang)
+        : 項目.値;
       エリア.appendChild(回答行);
     }
   });
 }
 
-function QR用行番号収集() {
-  const 行番号一覧 = [];
-  表示順.forEach(function(キー) {
-    const 値 = localStorage.getItem(キー);
-    if (!値) return;
-    let 解析済み = null;
-    try { 解析済み = JSON.parse(値); } catch(e) {}
-    if (Array.isArray(解析済み)) {
-      解析済み.forEach(function(n) { 行番号一覧.push(n); });
-    } else {
-      const 行番号 = parseInt(値);
-      if (!isNaN(行番号) && String(行番号) === 値) {
-        行番号一覧.push(値);
-      }
-    }
-  });
-  return 行番号一覧;
-}
-
 function まとめ表示() {
   const 言語 = localStorage.getItem("選択言語") || "ja";
+  const 結果 = 問診結果取得();
 
   document.getElementById("見出し母国語").textContent =
     テキスト取得(130200, 言語);
   document.getElementById("見出し日本語").textContent =
     テキスト取得(130200, "ja");
 
-  エリアに追加(document.getElementById("まとめ母国語"), 言語);
-  エリアに追加(document.getElementById("まとめ日本語"), "ja");
+  エリアに追加(document.getElementById("まとめ母国語"), 結果, 言語);
+  エリアに追加(document.getElementById("まとめ日本語"), 結果, "ja");
 
-  const QRデータ = QR用行番号収集().join(",");
+  // QRコード（回答行番号のみカンマ区切り）
+  const QR行番号 = [];
+  結果.forEach(function(項目) {
+    let 解析済み = null;
+    try { 解析済み = JSON.parse(項目.値); } catch(e) {}
+    if (Array.isArray(解析済み)) {
+      解析済み.forEach(function(n) { QR行番号.push(n); });
+    } else {
+      const n = parseInt(項目.値);
+      if (!isNaN(n) && String(n) === 項目.値) QR行番号.push(項目.値);
+    }
+  });
+
   new QRCode(document.getElementById("QRコード"), {
-    text: QRデータ,
+    text: QR行番号.join(","),
     width: 256,
     height: 256,
   });
