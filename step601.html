@@ -27,14 +27,14 @@ body::before {
   pointer-events: none;
   z-index: 0;
 }
-.まとめ見出し {
-  margin-top: 1.5em;
-  font-weight: bold;
-  border-bottom: 1px solid #888;
-  padding-bottom: 0.2em;
+.質問行 {
+  margin: 0.8em 0 0.1em 0;
+  font-size: 0.85em;
+  color: #555;
 }
-.まとめ行 {
-  margin: 0.3em 0 0.3em 1em;
+.回答行 {
+  margin: 0 0 0 1.5em;
+  font-weight: bold;
 }
 #QRエリア {
   margin: 1.5em 0;
@@ -69,10 +69,34 @@ body::before {
 <script src="dict.js"></script>
 <script>
 
+// キー名（日本語）→ 質問行番号のマッピング
+const キー質問番号 = {
+  "主訴":             20200,
+  "痛み部位":         30200,
+  "最重要痛み部位":   40300,
+  "痛み開始時期":     50200,
+  "最初の痛みの持続時間": 60300,
+  "痛みの変化":       70300,
+  "悪化する姿勢や動作": 80200,
+  "楽になる姿勢や動作": 80600,
+  "過去に似た痛み":   90300,
+  "食欲":             100300,
+  "食事量":           100600,
+  "便通の変化":       110200,
+  "睡眠の変化":       110500,
+  "排尿しにくい":     120200,
+  "排尿時痛":         120500,
+  "場所がわからなくなった": 120800,
+  "失神":             121100,
+  "健康診断受診":     121400,
+  "大きな病気の既往": 121800,
+};
+
 function 問診結果取得() {
   const 結果 = [];
   for (let i = 0; i < localStorage.length; i++) {
     const キー = localStorage.key(i);
+    if (キー === "選択言語") continue;
     const 値 = localStorage.getItem(キー);
     const 行番号 = parseInt(値);
     if (!isNaN(行番号) && String(行番号) === 値) {
@@ -87,37 +111,37 @@ function まとめ表示() {
   const 言語 = localStorage.getItem("選択言語") || "ja";
   const 結果 = 問診結果取得();
 
-  // 母国語見出し
   document.getElementById("見出し母国語").textContent =
     文字列取得(130200);
-
-  // 日本語見出し
   document.getElementById("見出し日本語").textContent =
     辞書[130200]["ja"];
 
-  // 母国語まとめ
-  const 母国語エリア = document.getElementById("まとめ母国語");
-  結果.forEach(function(項目) {
-    const 行 = document.createElement("p");
-    行.className = "まとめ行";
-    行.textContent = 辞書[項目.値]
-      ? (辞書[項目.値][言語] || 辞書[項目.値]["ja"])
-      : 項目.値;
-    母国語エリア.appendChild(行);
-  });
+  function エリアに追加(エリア, lang) {
+    結果.forEach(function(項目) {
+      // 質問
+      const 質問番号 = キー質問番号[項目.キー];
+      if (質問番号) {
+        const 質問行 = document.createElement("p");
+        質問行.className = "質問行";
+        質問行.textContent = 辞書[質問番号]
+          ? (辞書[質問番号][lang] || 辞書[質問番号]["ja"])
+          : 項目.キー;
+        エリア.appendChild(質問行);
+      }
+      // 回答
+      const 回答行 = document.createElement("p");
+      回答行.className = "回答行";
+      回答行.textContent = 辞書[項目.値]
+        ? (辞書[項目.値][lang] || 辞書[項目.値]["ja"])
+        : 項目.値;
+      エリア.appendChild(回答行);
+    });
+  }
 
-  // 日本語まとめ
-  const 日本語エリア = document.getElementById("まとめ日本語");
-  結果.forEach(function(項目) {
-    const 行 = document.createElement("p");
-    行.className = "まとめ行";
-    行.textContent = 辞書[項目.値]
-      ? 辞書[項目.値]["ja"]
-      : 項目.値;
-    日本語エリア.appendChild(行);
-  });
+  エリアに追加(document.getElementById("まとめ母国語"), 言語);
+  エリアに追加(document.getElementById("まとめ日本語"), "ja");
 
-  // QRコード生成（行番号をカンマ区切りで）
+  // QRコード生成
   const QRデータ = 結果.map(function(項目) {
     return 項目.値;
   }).join(",");
