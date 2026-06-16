@@ -41,7 +41,12 @@ body::before {
   margin: 1.5em 0;
   text-align: center;
 }
-#身体計測行 {
+#身体計測行母国語 {
+  margin: 1em 0 0 1.5em;
+  font-weight: bold;
+  font-size: 1.1em;
+}
+#身体計測行日本語 {
   margin: 1em 0 0 1.5em;
   font-weight: bold;
   font-size: 1.1em;
@@ -55,6 +60,9 @@ body::before {
 <h1 id="見出し母国語"></h1>
 <div id="まとめ母国語"></div>
 
+<!-- 身長・体重・体温（母国語セクション）：翻訳不要、一律単位表示 -->
+<p id="身体計測行母国語"></p>
+
 <p>　</p>
 <button type="button" id="行130400" onclick="やり直し()"></button>
 <p>　</p>
@@ -64,8 +72,8 @@ body::before {
 <h1 id="見出し日本語"></h1>
 <div id="まとめ日本語"></div>
 
-<!-- 身長・体重・体温：翻訳不要、一律単位表示 -->
-<p id="身体計測行"></p>
+<!-- 身長・体重・体温（日本語セクション）：翻訳不要、一律単位表示 -->
+<p id="身体計測行日本語"></p>
 
 <hr>
 
@@ -196,7 +204,8 @@ function 身体計測表示() {
   const 体温表示 = 体温 ? 体温 + " ℃" : "";
 
   const 表示文字列 = [身長表示, 体重表示, 体温表示].filter(Boolean).join("　　");
-  document.getElementById("身体計測行").textContent = 表示文字列;
+  document.getElementById("身体計測行母国語").textContent = 表示文字列;
+  document.getElementById("身体計測行日本語").textContent = 表示文字列;
 }
 
 function まとめ表示() {
