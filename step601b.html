@@ -164,8 +164,23 @@ function 問診結果取得() {
   return 結果;
 }
 
+function 主訴単数か() {
+  const 値 = localStorage.getItem("主訴一覧");
+  if (!値) return true;
+  try {
+    const 配列 = JSON.parse(値);
+    return Array.isArray(配列) && 配列.length <= 1;
+  } catch(e) {
+    return true;
+  }
+}
+
 function エリアに追加(エリア, 結果, lang) {
+  const 単数 = 主訴単数か();
   結果.forEach(function(項目) {
+    // 主訴が単数の場合、最重要主訴をスキップ
+    if (項目.キー === "最重要主訴" && 単数) return;
+
     const 質問番号 = キー質問番号[項目.キー];
     const 質問行 = document.createElement("p");
     質問行.className = "質問行";
