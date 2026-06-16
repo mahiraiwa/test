@@ -356,8 +356,7 @@ const 辞書 = {
 120065: {ja: "本日の体温（摂氏）", en: "Today's body temperature (°C)", "zh": "今日体温 (°C)", "zh-TW": "今日體溫 (°C)", "bn": "আজকের শরীরের তাপমাত্রা (°C)", "ur": "آج کا جسمانی درجہ حرارت (°C)", "fa": "دمای بدن امروز (°C)", "id": "Suhu tubuh hari ini (°C)", "vi": "Nhiệt độ cơ thể hôm nay (°C)", "my": "ယနေ့ ခန္ဓာကိုယ်အပူချိန် (°C)", "ne": "आजको शरीरको तापक्रम (°C)", "tl": "Temperatura ng katawan ngayong araw (°C)", "ta": "இன்றைய உடல் வெப்பநிலை (°C)", "si": "අද දින ශරීර උෂ්ණත්වය (°C)"},
 
   
-161100: {ja: "次へ", en: "Next", "zh": "下一步", "zh-TW": "下一步", "bn": "পরবর্তী", "ur": "اگلا", "fa": "بعدی", "id": "Berikutnya", "vi": "Tiếp theo <input type=\"radio\" name=\"言語選択\" value=\"my\"> မြန်မာဘာသာ（ミャンマー語） × <br><br> <input type=\"radio\" name=\"言語選択\" value=\"ne\">", "my": "ဆက်ရန်", "ne": "अगाडि बढ्नुहोस्", "tl": "Susunod", "ta": "அடுத்து", "si": "ඉදිරියට"},
-
+161100: {ja: "次へ", en: "Next", "zh": "下一步", "zh-TW": "下一步", "bn": "পরবর্তী", "ur": "اگلا", "fa": "بعدی", "id": "Berikutnya", "vi": "Tiếp theo", "my": "ဆက်ရန်", "ne": "अगाडि बढ्नुहोस्", "tl": "Susunod", "ta": "அடுத்து", "si": "ඉදிරியට"},
 };
 
 // 行番号から現在の選択言語のテキストを返す関数
