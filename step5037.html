@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<title>しびれの部位</title>
+<link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+<!-- 164000: しびれの部位 -->
+<h1 id="行164000"></h1>
+
+<!-- 164100: 体のどこがしびれていますか？ -->
+<p id="行164100" style="margin-left: 1em;"></p>
+
+<p>　</p>
+
+<form>
+
+<!-- 164200: 頭・顔 -->
+<label>
+<input type="checkbox" name="しびれ部位" value="164200">
+<span id="行164200"></span>
+</label>
+
+<br><br>
+
+<!-- 164300: 右手・右腕 -->
+<label>
+<input type="checkbox" name="しびれ部位" value="164300">
+<span id="行164300"></span>
+</label>
+
+<br><br>
+
+<!-- 164400: 左手・左腕 -->
+<label>
+<input type="checkbox" name="しびれ部位" value="164400">
+<span id="行164400"></span>
+</label>
+
+<br><br>
+
+<!-- 164500: 右足・右脚 -->
+<label>
+<input type="checkbox" name="しびれ部位" value="164500">
+<span id="行164500"></span>
+</label>
+
+<br><br>
+
+<!-- 164600: 左足・左脚 -->
+<label>
+<input type="checkbox" name="しびれ部位" value="164600">
+<span id="行164600"></span>
+</label>
+
+<br><br>
+
+<!-- 164700: その他の部位 -->
+<label>
+<input type="checkbox" name="しびれ部位" value="164700">
+<span id="行164700"></span>
+</label>
+
+<br><br>
+
+<!-- 164800: 次へ -->
+<button type="button" id="行164800" onclick="次へ()"></button>
+
+</form>
+
+<script src="dict.js"></script>
+
+<script>
+function 画面初期化(){
+  const 行番号一覧 = [164000,164100,164200,164300,164400,164500,164600,164700,164800];
+  行番号一覧.forEach(function(番号){
+    const 要素 = document.getElementById("行" + 番号);
+    if(要素) 要素.textContent = 文字列取得(番号);
+  });
+}
+
+function 次へ(){
+  const 選択部位 = [];
+  document.querySelectorAll('input[name="しびれ部位"]:checked').forEach(function(項目){
+    選択部位.push(項目.value);
+  });
+
+  if(選択部位.length === 0){
+    return;
+  }
+
+  localStorage.setItem("しびれ部位", JSON.stringify(選択部位));
+  localStorage.removeItem("最重要しびれ部位");
+
+  if(選択部位.length === 1){
+    location.href = "step5041.html";
+  } else {
+    location.href = "step50375.html";
+  }
+}
+
+画面初期化();
+</script>
+
+</body>
+</html>
